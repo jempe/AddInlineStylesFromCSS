@@ -1,4 +1,4 @@
-#Add Inline Styles from CSS to an Element
+# Add Inline Styles from CSS to an Element
 
 This script allows you to get all the computed CSS properties of a specified element and add them as inline styles to the element's `style` attribute. It only adds the properties that belong to the CSS files and ignores the browser defaults.
 

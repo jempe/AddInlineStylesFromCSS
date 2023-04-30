@@ -20,8 +20,14 @@ function addInlineStylesFromCSS(element) {
 						const propertyName = style[k];
 						const propertyValue = style.getPropertyValue(propertyName);
 
-						// Add the property and its value to the inline styles string
-						inlineStyles += `${propertyName}: ${propertyValue}; `;
+						// compare the property value with the computed style
+						const computedStyle = window.getComputedStyle(element);
+
+						if (computedStyle.getPropertyValue(propertyName) === propertyValue) {
+
+							// Add the property and its value to the inline styles string
+							inlineStyles += `${propertyName}: ${propertyValue}; `;
+						}
 					}
 				}
 			}
@@ -40,7 +46,24 @@ function addInlineStylesFromCSS(element) {
 	element.setAttribute('style', inlineStyles);
 }
 
+function addInlineStylesToAllChildren(element) {
+	// Add inline styles to the element itself
+	addInlineStylesFromCSS(element);
+
+	// Add inline styles to all the element's children
+	const children = element.children;
+	for (let i = 0; i < children.length; i++) {
+		addInlineStylesToAllChildren(children[i]);
+
+		if (children[i].children.length > 0) {
+			for(let j = 0; j < children[i].children.length; j++) {
+				addInlineStylesToAllChildren(children[i].children[j]);
+			}
+		}
+	}
+}
+
 // Example usage
 const targetElement = document.querySelector('#some-element');
-addInlineStylesFromCSS(targetElement);
+addInlineStylesToAllChildren(targetElement);
 
